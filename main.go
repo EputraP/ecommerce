@@ -4,6 +4,7 @@ import (
 	"ecommerce/internal/handler"
 	"ecommerce/internal/routes"
 	"ecommerce/internal/service"
+	dbstore "ecommerce/internal/store/db"
 	"fmt"
 	"log"
 	"os"
@@ -42,6 +43,9 @@ func main() {
 }
 
 func prepare()(handlers routes.Handlers){
+
+	_ = dbstore.Get()
+
 	testService := service.NewTestService()
 	test:= handler.NewTestHandler(handler.TestHandlerConfig{
 		TestService: testService,
