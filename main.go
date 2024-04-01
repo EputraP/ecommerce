@@ -1,6 +1,9 @@
 package main
 
 import (
+	"ecommerce/internal/handler"
+	"ecommerce/internal/routes"
+	"ecommerce/internal/service"
 	"fmt"
 	"log"
 	"os"
@@ -15,7 +18,11 @@ func main() {
 		log.Fatalln("Error loading env")
 	}
 
+	handlers := prepare()
+
 	srv := gin.Default()
+
+	routes.Build(srv, handlers)
 	srv.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "Hello world!",
@@ -32,4 +39,16 @@ func main() {
 		log.Println("Error running gin server: ", err)
 		log.Fatalln("Error running gin server: ", err)
 	}
+}
+
+func prepare()(handlers routes.Handlers){
+	testService := service.NewTestService()
+	test:= handler.NewTestHandler(handler.TestHandlerConfig{
+		TestService: testService,
+	})
+
+	handlers = routes.Handlers{
+		Test: test,
+	}
+	return
 }

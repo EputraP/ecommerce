@@ -4,9 +4,14 @@ type TestService interface {
 	Test() string
 }
 
-// func NewTestService(config TestServiceConfig)
+type testService struct {
+}
 
-func Test() string {
+func NewTestService() TestService {
+	return &testService{}
+}
+
+func (ts *testService) Test() string {
 	return "test"
 
 }
